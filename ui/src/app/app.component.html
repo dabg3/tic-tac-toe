@@ -1,0 +1,6 @@
+<svg width="600" height="600">
+  <g *ngFor="let square of squares">
+    <rect width="200" height="200" fill="#eee" class="square" (click)="onClick(square)"/>
+    <image *ngIf="isSquareOccupied(square)" width="200" height="200" appImage [square]="square" class="image"/>
+  </g>
+</svg>
