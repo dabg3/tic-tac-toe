@@ -67,6 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
       return;
     }
     square.player = this.turn;
+    this.updateGameState();
     this.gameSrv.check(this.gameState)
       .subscribe(res => {
         switch (res.status) {
@@ -77,6 +78,23 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
         }
       });
     this.nextTurn();
+  }
+
+  private updateGameState(): void {
+    this.gameState = {
+      xIndexes: [],
+      oIndexes: []
+    }
+    this.squares.forEach(sq => {
+      if (!sq.player) {
+        return;
+      }
+      if (sq.player as Player === Player.x) {
+        this.gameState.xIndexes.push(sq.index);
+      } else {
+        this.gameState.oIndexes.push(sq.index);
+      }
+    })
   }
 
   nextTurn(): void {
