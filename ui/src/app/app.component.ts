@@ -91,7 +91,6 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
     }
   }
 
-
   nextTurn(): void {
     if (this.turn == Player.x) {
       this.turn = Player.o;
