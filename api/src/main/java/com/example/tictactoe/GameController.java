@@ -65,7 +65,7 @@ public class GameController {
         });
     }
 
-    @PostMapping(path = "/status/check")
+    @PostMapping(path = "/game/check")
     public ResponseEntity<StatusResponseDTO> getTest(@RequestBody GameDTO gameState) {
         BitSet xBoard = bitboardize(gameState.getxIndexes());
         BitSet oBoard = bitboardize(gameState.getoIndexes());
