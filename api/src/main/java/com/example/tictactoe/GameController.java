@@ -68,8 +68,26 @@ public class GameController {
     @PostMapping(path = "/game/check")
     public ResponseEntity<StatusResponseDTO> getTest(@RequestBody GameDTO gameState) {
         BitSet xBoard = bitboardize(gameState.getxIndexes());
+        debugInfo(List.of(xBoard), "xBoard");
         BitSet oBoard = bitboardize(gameState.getoIndexes());
-        return ResponseEntity.ok(new StatusResponseDTO(CheckResult.VICTORY_X));
+        debugInfo(List.of(oBoard), "oBoard");
+        for (BitSet wPos : WINNING_POSITONS) {
+            if (isMatching(wPos, xBoard)) {
+                return ResponseEntity.ok(new StatusResponseDTO(CheckResult.VICTORY_X));
+            } else if (isMatching(wPos, oBoard)){
+                return ResponseEntity.ok(new StatusResponseDTO(CheckResult.VICTORY_O));
+            }
+        }
+        if (gameState.getxIndexes().size() + gameState.getoIndexes().size() == 9) {
+            return ResponseEntity.ok(new StatusResponseDTO(CheckResult.DRAW));
+        }
+        return ResponseEntity.ok(new StatusResponseDTO(CheckResult.NONE));
+    }
+
+    private boolean isMatching(BitSet wPos, BitSet pBoard) {
+        BitSet op = (BitSet) wPos.clone();
+        op.and(pBoard);
+        return op.cardinality() == 3;
     }
 
     private BitSet bitboardize(List<Integer> indexes) {
